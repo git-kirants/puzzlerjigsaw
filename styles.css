@@ -178,3 +178,39 @@ h1 {
     justify-content: center; /* Center horizontally */
     margin: 20px 0; /* Optional: Add some margin for spacing */
 }
+#next-level {
+    margin: 15px auto; /* Center the button with automatic margins */
+    display: block; /* Ensures it behaves as a block element */
+    padding: 15px 30px; /* Maintain padding for aesthetics */
+    font-size: 30px; /* Set font size */
+    background-color: #00ff00; /* Maintain existing background color */
+    color: black; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+#next-level:hover {
+    background-color: #00cc00; /* Darker shade on hover */
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+#next-level:active {
+    transform: scale(0.95); /* Slightly smaller when clicked */
+}
+@media (max-width: 768px) {
+    #next-level {
+        font-size: 24px; /* Adjust font size for tablet screens */
+        padding: 10px 20px; /* Adjust padding for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    #next-level {
+        font-size: 20px; /* Further adjust font size for mobile screens */
+        padding: 8px 15px; /* Smaller padding for mobile */
+        width: 90%; /* Use 90% width to ensure it fits */
+    }
+}
+
