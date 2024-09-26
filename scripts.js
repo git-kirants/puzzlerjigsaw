@@ -5,7 +5,7 @@ const mediumButton = document.getElementById('medium');
 const hardButton = document.getElementById('hard');
 const solveButton = document.getElementById('solve');
 
-let currentLevel = 10;
+let currentLevel = 10;  // Start with the easy level
 let puzzleState = [];
 let startTime, intervalId;
 let completedLevels = new Set();
@@ -25,7 +25,9 @@ window.onload = () => {
 
     loadCompletedLevels();
     updateButtonStates();
-    setupPuzzle(currentLevel);
+    
+    // Ensure the Easy level puzzle is set up on page load
+    setupPuzzle(currentLevel);  // This will render the Easy level puzzle
 };
 
 function loadCompletedLevels() {
@@ -42,6 +44,10 @@ function saveCompletedLevels() {
 function updateButtonStates() {
     mediumButton.disabled = !completedLevels.has(10);
     hardButton.disabled = !completedLevels.has(12);
+    
+    // Hide lock icons if levels are unlocked
+    document.querySelector('.lock-icon.medium').style.display = mediumButton.disabled ? 'inline-block' : 'none';
+    document.querySelector('.lock-icon.hard').style.display = hardButton.disabled ? 'inline-block' : 'none';
 }
 
 function setupPuzzle(level) {
@@ -51,27 +57,32 @@ function setupPuzzle(level) {
 
 function createPuzzle(level) {
     puzzleContainer.innerHTML = '';
-    puzzleContainer.style.gridTemplateColumns = `repeat(${level}, 1fr)`;
-    puzzleContainer.style.gridTemplateRows = `repeat(${level}, 1fr)`;
 
-    const totalPieces = level * level;
+    // Set up grid layout based on the level
+    const gridSize = level === 10 ? 10 : (level === 12 ? 12 : 16);
+    puzzleContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+    puzzleContainer.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+
+    const totalPieces = gridSize * gridSize;  // Total pieces for the grid
     const imageSrc = levelImages[level];
 
     for (let i = 0; i < totalPieces; i++) {
         const puzzlePiece = document.createElement('div');
         puzzlePiece.classList.add('puzzle-piece');
+
+        puzzlePiece.style.width = "100%";
+        puzzlePiece.style.height = "100%";
         puzzlePiece.style.backgroundImage = `url(${imageSrc})`;
-        puzzlePiece.style.backgroundSize = `${level * 100}% ${level * 100}%`;
-        puzzlePiece.style.backgroundPosition = `${(i % level) * 100 / (level - 1)}% ${Math.floor(i / level) * 100 / (level - 1)}%`;
+        puzzlePiece.style.backgroundSize = `${gridSize * 100}% ${gridSize * 100}%`;
+        puzzlePiece.style.backgroundPosition = `${(i % gridSize) * 100 / (gridSize - 1)}% ${Math.floor(i / gridSize) * 100 / (gridSize - 1)}%`;
+
         puzzlePiece.setAttribute('draggable', true);
         puzzlePiece.dataset.correctPosition = i;
 
-        // Desktop: Drag-and-drop events
+        // Event listeners for drag-and-drop
         puzzlePiece.addEventListener('dragstart', dragStart);
         puzzlePiece.addEventListener('dragover', dragOver);
         puzzlePiece.addEventListener('drop', drop);
-
-        // Mobile: Touch event listeners
         puzzlePiece.addEventListener('touchstart', touchStart);
         puzzlePiece.addEventListener('touchmove', touchMove);
         puzzlePiece.addEventListener('touchend', touchEnd);
@@ -109,7 +120,7 @@ function drop(e) {
     checkPuzzleCompletion();
 }
 
-// Mobile: Touch event handlers
+// Mobile touch event handlers
 let startX, startY, targetPiece;
 
 function touchStart(e) {
@@ -237,7 +248,7 @@ function updateTimer() {
     const elapsedTime = Date.now() - startTime;
     const seconds = Math.floor((elapsedTime / 1000) % 60);
     const minutes = Math.floor((elapsedTime / (1000 * 60)) % 60);
-    timerDisplay.textContent = `Time: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    timerDisplay.textContent = `Time: ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 }
 
 function resetPuzzle() {
