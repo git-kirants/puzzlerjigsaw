@@ -36,17 +36,17 @@ h1 {
     background-color: #00ff00; /* Main accent color */
     color: black; /* Use black for text for better contrast */
     transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    display: flex; /* Enable flex for alignment */
+    align-items: center; /* Center align items vertically */
 }
 
 .level-button:hover {
     background-color: #00cc00; /* Darker shade on hover */
     transform: scale(1.05); /* Slightly enlarge button */
-    font-family: 'Bebas Neue', sans-serif;
 }
 
 .level-button:active {
     transform: scale(0.95); /* Slightly shrink button when clicked */
-    font-family: 'Bebas Neue', sans-serif;
 }
 
 #puzzle-container {
@@ -58,6 +58,7 @@ h1 {
     max-height: 90vw; /* Responsive height */
     aspect-ratio: 1 / 1; /* Maintain aspect ratio */
     border: 2px solid #333;
+    
 }
 
 .puzzle-piece {
@@ -100,7 +101,6 @@ h1 {
 
 .close-button:hover {
     color: red;
-    font-family: 'Bebas Neue', sans-serif;
 }
 
 .logo {
@@ -113,9 +113,10 @@ h1 {
 
 .lock-icon {
     margin-left: 5px; /* Space between the text and the icon */
-    color: #ff0000; /* Color for the lock icon */
+    color: #000000; /* Color for the lock icon */
     font-size: 20px; /* Size of the icon */
     display: inline; /* Ensure the icon is inline */
+    vertical-align: middle; /* Align the icon vertically with the text */
 }
 
 /* Responsive Styles */
@@ -127,7 +128,6 @@ h1 {
     .level-button {
         font-size: 18px; /* Adjust button font size for smaller screens */
         padding: 10px 20px; /* Adjust padding for smaller screens */
-        font-family: 'Bebas Neue', sans-serif;
     }
 
     .logo {
@@ -149,10 +149,16 @@ h1 {
     .level-button {
         font-size: 16px; /* Smaller button font size for very small screens */
         padding: 10px 15px; /* Further adjust padding */
-        font-family: 'Bebas Neue', sans-serif;
     }
 
     .lock-icon {
         font-size: 18px; /* Adjust lock icon size */
     }
 }
+.button-center {
+    display: flex; /* Use flexbox for centering */
+    justify-content: center; /* Center horizontally */
+    margin: 20px 0; /* Optional: Add some margin for spacing */
+}
+
+/* Rest of your CSS remains the same */

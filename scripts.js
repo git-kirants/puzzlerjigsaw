@@ -66,9 +66,15 @@ function createPuzzle(level) {
         puzzlePiece.setAttribute('draggable', true);
         puzzlePiece.dataset.correctPosition = i;
 
+        // Desktop: Drag-and-drop events
         puzzlePiece.addEventListener('dragstart', dragStart);
         puzzlePiece.addEventListener('dragover', dragOver);
         puzzlePiece.addEventListener('drop', drop);
+
+        // Mobile: Touch event listeners
+        puzzlePiece.addEventListener('touchstart', touchStart);
+        puzzlePiece.addEventListener('touchmove', touchMove);
+        puzzlePiece.addEventListener('touchend', touchEnd);
 
         puzzleContainer.appendChild(puzzlePiece);
     }
@@ -88,6 +94,7 @@ function scramblePieces() {
 
 let draggedPiece;
 
+// Drag-and-drop event handlers for desktop
 function dragStart(e) {
     draggedPiece = e.target;
 }
@@ -98,14 +105,49 @@ function dragOver(e) {
 
 function drop(e) {
     const targetPiece = e.target;
+    swapPieces(draggedPiece, targetPiece);
+    checkPuzzleCompletion();
+}
+
+// Mobile: Touch event handlers
+let startX, startY, targetPiece;
+
+function touchStart(e) {
+    const touch = e.touches[0];
+    draggedPiece = e.target;
+    startX = touch.clientX;
+    startY = touch.clientY;
+    e.preventDefault(); // Prevent default touch behaviors
+}
+
+function touchMove(e) {
+    e.preventDefault(); // Prevent scrolling while dragging
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - startX;
+    const deltaY = touch.clientY - startY;
+    draggedPiece.style.transform = `translate(${deltaX}px, ${deltaY}px)`; // Move the piece
+}
+
+function touchEnd(e) {
+    draggedPiece.style.transform = ''; // Reset position after touch ends
+    const touch = e.changedTouches[0];
+    targetPiece = document.elementFromPoint(touch.clientX, touch.clientY); // Identify the drop target
+
+    if (targetPiece && targetPiece.classList.contains('puzzle-piece')) {
+        swapPieces(draggedPiece, targetPiece);
+        checkPuzzleCompletion();
+    }
+}
+
+function swapPieces(draggedPiece, targetPiece) {
     const draggedStyle = window.getComputedStyle(draggedPiece).backgroundPosition;
     const targetStyle = window.getComputedStyle(targetPiece).backgroundPosition;
-    
+
+    // Swap background positions
     draggedPiece.style.backgroundPosition = targetStyle;
     targetPiece.style.backgroundPosition = draggedStyle;
 
     savePuzzleState();
-    checkPuzzleCompletion();
 }
 
 function checkPuzzleCompletion() {
